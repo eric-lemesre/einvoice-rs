@@ -53,11 +53,11 @@ just lint           # cargo clippy -- -D warnings
 
 ## Project status
 
-Project is in its bootstrap phase. The `facturx`, `ubl` and `delivery`
-crates currently expose typed stubs that return `Error::Serialization` /
-`Error::Delivery`. The next implementation milestone is the **CII XML
-serializer** for Factur-X (see `crates/facturx/src/lib.rs` — method
-`FacturXSerializer::serialize_xml`).
+Project is in its bootstrap phase. `einvoice-facturx::FacturXSerializer`
+now produces a valid **Cross Industry Invoice** XML (UN/CEFACT D22B) via
+`FacturXSerializer::serialize_xml`. The `ubl` and `delivery` crates still
+expose typed stubs. The next implementation milestone is the PDF/A-3
+envelope wrapper around the CII XML plus the UBL 2.1 serializer.
 
 ## References
 

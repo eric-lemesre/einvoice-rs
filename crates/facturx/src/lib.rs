@@ -6,9 +6,10 @@
 //! (« Extended »).
 //!
 //! Ce crate expose un [`FacturXSerializer`] qui implémente le trait
-//! [`InvoiceSerializer`]. La génération réelle du XML CII et l'encapsulation
-//! dans un PDF/A-3 ne sont pas encore implémentées — c'est la prochaine étape
-//! prévue sur ce dépôt.
+//! [`InvoiceSerializer`]. La génération du XML CII est prise en charge par
+//! le module [`cii`] ; l'encapsulation dans un PDF/A-3 reste à faire.
+
+pub mod cii;
 
 use einvoice_core::{Error, Invoice, InvoiceSerializer, Result};
 
@@ -58,12 +59,8 @@ impl FacturXSerializer {
     /// Utile pour les tests et pour les scénarios où l'on n'a besoin que de
     /// la partie structurée (dépôt sur Chorus Pro en « facture mixte », par
     /// exemple).
-    pub fn serialize_xml(&self, _invoice: &Invoice) -> Result<Vec<u8>> {
-        // TODO : construire le Cross Industry Invoice selon le profil
-        // `self.profile` en s'appuyant sur `quick-xml`.
-        Err(Error::serialization(
-            "Factur-X CII XML serializer not yet implemented",
-        ))
+    pub fn serialize_xml(&self, invoice: &Invoice) -> Result<Vec<u8>> {
+        cii::write_cross_industry_invoice(invoice, self.profile)
     }
 }
 
