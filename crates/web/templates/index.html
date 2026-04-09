@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section>
+  <p>
+    Bienvenue sur <strong>einvoice-rs</strong>, la plateforme Rust de
+    facturation électronique conforme à la norme européenne
+    <em>EN 16931</em> et à la réforme française 2026.
+  </p>
+  <p>Formats supportés (en cours d'implémentation) :</p>
+  <ul>
+    <li><code>Factur-X</code> — PDF/A-3 + XML CII</li>
+    <li><code>UBL 2.1</code> — Chorus Pro / PEPPOL BIS Billing 3.0</li>
+  </ul>
+  <p>Canaux de transmission :</p>
+  <ul>
+    <li>Email (SMTP via <code>lettre</code>)</li>
+    <li>Chorus Pro / PISTE</li>
+  </ul>
+</section>
+{% endblock %}

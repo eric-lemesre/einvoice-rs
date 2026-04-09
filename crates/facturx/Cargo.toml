@@ -1,0 +1,16 @@
+[package]
+name = "einvoice-facturx"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+description = "Sérialiseur Factur-X (PDF/A-3 + XML CII) compatible EN 16931"
+
+[dependencies]
+einvoice-core = { workspace = true }
+quick-xml = { workspace = true }
+serde = { workspace = true }
+chrono = { workspace = true }
+rust_decimal = { workspace = true }

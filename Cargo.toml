@@ -1,0 +1,85 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/core",
+    "crates/facturx",
+    "crates/ubl",
+    "crates/delivery",
+    "crates/api",
+    "crates/web",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.80"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/eric-lemesre/einvoice-rs"
+authors = ["Eric Lemesre"]
+
+[workspace.dependencies]
+# Crates internes
+einvoice-core = { path = "crates/core" }
+einvoice-facturx = { path = "crates/facturx" }
+einvoice-ubl = { path = "crates/ubl" }
+einvoice-delivery = { path = "crates/delivery" }
+
+# Runtime async
+tokio = { version = "1", features = ["full"] }
+
+# Web
+axum = "0.7"
+tower = "0.5"
+tower-http = { version = "0.5", features = ["trace", "fs", "compression-gzip"] }
+
+# Sérialisation
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+quick-xml = { version = "0.36", features = ["serialize"] }
+
+# Base de données
+sqlx = { version = "0.8", default-features = false, features = [
+    "runtime-tokio-rustls",
+    "postgres",
+    "chrono",
+    "uuid",
+    "rust_decimal",
+    "macros",
+    "migrate",
+    "json",
+] }
+
+# Types domaine
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1", features = ["v4", "serde"] }
+rust_decimal = { version = "1", features = ["serde-with-str"] }
+
+# Erreurs / logs
+thiserror = "1"
+anyhow = "1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Email
+lettre = { version = "0.11", default-features = false, features = [
+    "builder",
+    "tokio1-rustls-tls",
+    "smtp-transport",
+] }
+
+# Client HTTP (Chorus Pro PISTE)
+reqwest = { version = "0.12", default-features = false, features = [
+    "json",
+    "rustls-tls",
+] }
+
+# Templates SSR
+askama = "0.12"
+
+# Configuration
+dotenvy = "0.15"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+strip = "symbols"

@@ -1,0 +1,19 @@
+[package]
+name = "einvoice-delivery"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+description = "Adaptateurs de transmission: email (lettre) + Chorus Pro PISTE"
+
+[dependencies]
+einvoice-core = { workspace = true }
+tokio = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tracing = { workspace = true }
+
+lettre = { workspace = true }
+reqwest = { workspace = true }
