@@ -19,12 +19,13 @@ This folder contains contributor-facing documentation for `einvoice-rs`.
 | [`references/peppol-bis-billing-3.0.md`](references/peppol-bis-billing-3.0.md) | PEPPOL BIS Billing 3.0, 4-corner model, AS4, SML/SMP         |
 | [`references/chorus-pro-piste.md`](references/chorus-pro-piste.md)       | Chorus Pro B2G platform and PISTE API gateway                      |
 | [`references/french-2026-reform.md`](references/french-2026-reform.md)   | French e-invoicing reform (PPF, PDP, e-reporting, lifecycle)       |
+| [`references/mandatory-invoice-fields.md`](references/mandatory-invoice-fields.md) | Mandatory invoice fields — EN 16931, CGI, 2026 reform new mentions |
 
 ## How the references map to the workspace
 
 | Crate               | Primary references                                                            |
 | ------------------- | ----------------------------------------------------------------------------- |
-| `einvoice-core`     | `references/en16931.md`                                                       |
+| `einvoice-core`     | `references/en16931.md`, `references/mandatory-invoice-fields.md`             |
 | `einvoice-facturx`  | `references/factur-x.md`, `references/cii-uncefact.md`                        |
 | `einvoice-ubl`      | `references/ubl-2.1.md`, `references/peppol-bis-billing-3.0.md`               |
 | `einvoice-delivery` | `references/chorus-pro-piste.md`, `references/peppol-bis-billing-3.0.md`      |

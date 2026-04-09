@@ -70,6 +70,7 @@ Reference sheets are available under [`docs/references/`](docs/references/):
 - [`docs/references/peppol-bis-billing-3.0.md`](docs/references/peppol-bis-billing-3.0.md) — PEPPOL rules for cross-border billing
 - [`docs/references/chorus-pro-piste.md`](docs/references/chorus-pro-piste.md) — French public platform API
 - [`docs/references/french-2026-reform.md`](docs/references/french-2026-reform.md) — PPF, PDP, e-reporting
+- [`docs/references/mandatory-invoice-fields.md`](docs/references/mandatory-invoice-fields.md) — mandatory invoice fields (EN 16931, CGI, 2026 reform)
 
 ## License
 
