@@ -72,6 +72,8 @@ local and CI parity.
 | `just coverage-clean` | Clean coverage artefacts                             |
 | `just mutants`     | Mutation testing on core/facturx/ubl                   |
 | `just setup-hooks` | Configure git to use `.githooks/` pre-commit hook      |
+| `just traceability` | Display the EN 16931 traceability matrix (glow/mdcat/cat) |
+| `just traceability-check` | Verify file and test references in the matrix    |
 | `just run-api`     | `cargo run -p einvoice-api`                           |
 | `just run-web`     | `cargo run -p einvoice-web`                           |
 | `just db-up`       | `docker run` a local PostgreSQL 16                    |

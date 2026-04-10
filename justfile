@@ -73,6 +73,20 @@ coverage-clean:
 mutants:
     cargo mutants --package einvoice-core --package einvoice-facturx --package einvoice-ubl --timeout 120 --jobs 2
 
+# Affiche la matrice de traçabilité EN 16931 (glow ou cat)
+traceability:
+    @if command -v glow > /dev/null 2>&1; then \
+        glow docs/references/traceability-matrix.md; \
+    elif command -v mdcat > /dev/null 2>&1; then \
+        mdcat docs/references/traceability-matrix.md; \
+    else \
+        cat docs/references/traceability-matrix.md; \
+    fi
+
+# Vérifie que les références de la matrice pointent vers du code existant
+traceability-check:
+    ./scripts/check-traceability.sh
+
 # Configure git pour utiliser les hooks du dépôt
 setup-hooks:
     git config core.hooksPath .githooks
