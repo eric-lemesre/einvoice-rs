@@ -72,8 +72,10 @@ local and CI parity.
 | `just coverage-clean` | Clean coverage artefacts                             |
 | `just mutants`     | Mutation testing on core/facturx/ubl                   |
 | `just setup-hooks` | Configure git to use `.githooks/` pre-commit hook      |
-| `just traceability` | Display the EN 16931 traceability matrix (glow/mdcat/cat) |
-| `just traceability-check` | Verify file and test references in the matrix    |
+| `just traceability` | [DEPRECATED] Display the old Markdown matrix (glow/mdcat/cat) |
+| `just traceability-check` | [DEPRECATED] Verify file and test references in the old matrix |
+| `just requirements-html` | Export EN 16931 StrictDoc requirements to navigable HTML |
+| `just requirements-check` | Validate `.sdoc` files and `@relation` markers    |
 | `just run-api`     | `cargo run -p einvoice-api`                           |
 | `just run-web`     | `cargo run -p einvoice-web`                           |
 | `just db-up`       | `docker run` a local PostgreSQL 16                    |
@@ -125,6 +127,12 @@ weekly. Reproduce the full pipeline locally with `just check` and
   verbatim — they are copy-pasted from upstream specs.
 - **No backwards-compat shims.** This project is pre-1.0. If a rename
   or delete is needed, do it outright.
+- **`@relation` markers** — public structs, functions and tests that
+  implement EN 16931 Business Terms carry
+  `/// @relation(BT-*, scope=function)` lines in their doc comments.
+  StrictDoc uses these for bidirectional traceability. When adding or
+  moving a BT implementation, update the `@relation` markers and the
+  matching `.sdoc` file under `docs/requirements/`.
 
 ## Testing instructions
 
@@ -192,8 +200,10 @@ weekly. Reproduce the full pipeline locally with `just check` and
     reference docs"`, `"Implement CII XML serializer for Factur-X"`.
   - Blank line, then a wrapped (≤ 72 cols) body explaining **why** and
     listing the concrete scope.
-  - Co-author trailer when produced with an agent:
-    `Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>`.
+  - **No agent attribution** in commits. Do **not** add `Co-Authored-By`,
+    `Generated-By`, or any other trailer or comment referencing the AI
+    agent that produced the code. The codebase must not carry traces of
+    the tooling used to write it.
 - **Do not commit** unless the user explicitly asks ("commit", "push",
   "PR"). Agents should propose and let the human confirm.
 - **Never** use `git commit --amend`, `git push --force`, or
@@ -249,6 +259,30 @@ amend the previous one.
 - `Chorus Pro` lifecycle status names are French and carried verbatim
   in API responses (`deposee`, `mise_a_disposition`, …). Keep them as
   string literals in `invoice_events.payload` rather than translating.
+
+## Quality and process
+
+- **`just check` before every commit** — this runs `fmt-check`, `lint`
+  and `test` in sequence. A commit that breaks any of these steps must
+  not be pushed.
+- **`just deny`** — run `cargo deny check` before pushing. Any new
+  advisory or licence violation must be fixed, not ignored.
+- **Requirements traceability (StrictDoc)** — EN 16931 requirements
+  live in `.sdoc` files under `docs/requirements/`. Source code links
+  are maintained via `/// @relation(BT-*, scope=function)` markers in
+  doc comments. When adding or changing a BT implementation:
+  1. Add / update the `@relation` marker on the struct, function or
+     test.
+  2. Update the matching `.sdoc` file (UID, STATEMENT, STATUS).
+  3. Run `just requirements-check` to validate coherence.
+  4. Run `just requirements-html` to preview the HTML report.
+- **CI pipeline** — GitHub Actions runs: `fmt`, `clippy`, `test` (with
+  PostgreSQL), `cargo-deny`, `strictdoc` (export + artifact upload),
+  and `coverage`. All jobs must be green before merge.
+- **Mutation testing** — `just mutants` runs weekly in CI and can be
+  run locally. It targets `einvoice-core`, `einvoice-facturx` and
+  `einvoice-ubl`. Surviving mutants should be addressed with
+  additional test assertions.
 
 ## When in doubt
 

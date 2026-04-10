@@ -1,5 +1,11 @@
 # EN 16931 Requirements Traceability Matrix
 
+> **SUPERSEDED** — This manual Markdown matrix has been replaced by
+> StrictDoc `.sdoc` files under `docs/requirements/` with automated
+> bidirectional traceability via `@relation` markers in the Rust source.
+> Use `just requirements-html` to generate the navigable HTML report.
+> This file is kept for historical reference only.
+
 This matrix maps EN 16931 Business Terms (BT) and Business Rules (BR) to
 the source code and tests that implement them. Status values:
 

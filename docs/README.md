@@ -33,6 +33,28 @@ This folder contains contributor-facing documentation for `einvoice-rs`.
 | `einvoice-api`      | `references/french-2026-reform.md`                                            |
 | `einvoice-web`      | (none specific)                                                               |
 
+## Requirements (StrictDoc)
+
+The [`requirements/`](requirements/) folder contains EN 16931
+requirements in StrictDoc `.sdoc` format, with automated bidirectional
+traceability to the Rust source code via `@relation` markers.
+
+| File                                                                 | Scope                                              |
+| -------------------------------------------------------------------- | -------------------------------------------------- |
+| [`requirements/strictdoc.toml`](requirements/strictdoc.toml)         | StrictDoc project configuration                    |
+| [`requirements/einvoice.sdoc`](requirements/einvoice.sdoc)           | Root document (introduction)                       |
+| [`requirements/header.sdoc`](requirements/header.sdoc)               | BG-2: BT-1, BT-2, BT-3, BT-5, BT-9, BT-22, BT-24 |
+| [`requirements/seller.sdoc`](requirements/seller.sdoc)               | BG-4: BT-27, BT-30, BT-31, BT-34, BT-35, BT-37, BT-38, BT-40 |
+| [`requirements/buyer.sdoc`](requirements/buyer.sdoc)                 | BG-7: BT-44, BT-47, BT-48, BT-49, BT-50, BT-52, BT-53, BT-55 |
+| [`requirements/line.sdoc`](requirements/line.sdoc)                   | BG-25: BT-126, BT-129, BT-130, BT-131, BT-146, BT-151, BT-152, BT-153 |
+| [`requirements/vat.sdoc`](requirements/vat.sdoc)                     | BG-23: BT-116, BT-117, BT-118, BT-119             |
+| [`requirements/totals.sdoc`](requirements/totals.sdoc)               | BG-22: BT-106, BT-109, BT-110, BT-112, BT-115    |
+| [`requirements/business-rules.sdoc`](requirements/business-rules.sdoc) | BR-CO-10 through BR-CO-15                        |
+| [`requirements/french-2026.sdoc`](requirements/french-2026.sdoc)     | French 2026 reform: SIREN, delivery, payment, period |
+
+Generate the navigable HTML report with `just requirements-html`.
+Validate `.sdoc` files and `@relation` markers with `just requirements-check`.
+
 ## Editorial rules
 
 - Each sheet starts with a one-paragraph "What it is" section so the reader

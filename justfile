@@ -73,7 +73,7 @@ coverage-clean:
 mutants:
     cargo mutants --package einvoice-core --package einvoice-facturx --package einvoice-ubl --timeout 120 --jobs 2
 
-# Affiche la matrice de traçabilité EN 16931 (glow ou cat)
+# [DEPRECATED: use just requirements-html] Affiche l'ancienne matrice Markdown
 traceability:
     @if command -v glow > /dev/null 2>&1; then \
         glow docs/references/traceability-matrix.md; \
@@ -83,9 +83,18 @@ traceability:
         cat docs/references/traceability-matrix.md; \
     fi
 
-# Vérifie que les références de la matrice pointent vers du code existant
+# [DEPRECATED: use just requirements-check] Vérifie l'ancienne matrice
 traceability-check:
     ./scripts/check-traceability.sh
+
+# Export EN 16931 requirements en HTML navigable (strictdoc requis)
+requirements-html:
+    strictdoc export docs/requirements/ --formats=html --output-dir output/strictdoc
+
+# Valide les fichiers .sdoc et les marqueurs @relation
+requirements-check:
+    strictdoc export docs/requirements/ --formats=html --output-dir /tmp/einvoice-sdoc-check
+    rm -rf /tmp/einvoice-sdoc-check
 
 # Configure git pour utiliser les hooks du dépôt
 setup-hooks:
