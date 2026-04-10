@@ -1,0 +1,64 @@
+[DOCUMENT]
+TITLE: French 2026 Reform Requirements
+
+[GRAMMAR]
+ELEMENTS:
+- TAG: REQUIREMENT
+  FIELDS:
+  - TITLE: UID
+    TYPE: String
+    REQUIRED: True
+  - TITLE: TITLE
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATEMENT
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATUS
+    TYPE: String
+    REQUIRED: True
+
+[TEXT]
+STATEMENT: >>>
+Requirements specific to the French 2026 e-invoicing reform that do
+not have a direct Business Term mapping in EN 16931. These are
+additional obligations imposed by the French tax authority (DGFiP)
+for domestic B2B invoicing.
+<<<
+
+[REQUIREMENT]
+UID: FR26-SIREN
+TITLE: SIREN/SIRET identifier
+STATEMENT: >>>
+Seller and buyer must carry a SIREN or SIRET legal registration
+identifier. Mapped to Party::legal_id in the domain model.
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: FR26-DELIVERY-ADDR
+TITLE: Delivery address
+STATEMENT: >>>
+The address of goods delivery must be provided when applicable.
+Not yet implemented in the domain model.
+<<<
+STATUS: TODO
+
+[REQUIREMENT]
+UID: FR26-PAYMENT-MEANS
+TITLE: Payment means
+STATEMENT: >>>
+A reference to the payment method must be included.
+Not yet implemented in the domain model.
+<<<
+STATUS: TODO
+
+[REQUIREMENT]
+UID: FR26-BILLING-PERIOD
+TITLE: Billing period
+STATEMENT: >>>
+The service period (start date and end date) must be specified
+when the invoice covers a period of service.
+Not yet implemented in the domain model.
+<<<
+STATUS: TODO

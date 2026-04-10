@@ -1,0 +1,30 @@
+[DOCUMENT]
+TITLE: einvoice-rs EN 16931 Requirements
+
+[TEXT]
+STATEMENT: >>>
+This document set defines the EN 16931 requirements implemented by
+einvoice-rs. Each requirement maps to a Business Term (BT) or Business
+Rule (BR) from the European standard, with traceability to the Rust
+source code via @relation markers.
+
+The requirements are organised by Business Group (BG) following the
+EN 16931 semantic model structure.
+<<<
+
+[SECTION]
+TITLE: Requirement documents
+
+[TEXT]
+STATEMENT: >>>
+- header.sdoc — BG-2: Invoice header fields (BT-1 through BT-24)
+- seller.sdoc — BG-4: Seller information (BT-27 through BT-40)
+- buyer.sdoc — BG-7: Buyer information (BT-44 through BT-55)
+- line.sdoc — BG-25: Invoice line details (BT-126 through BT-153)
+- vat.sdoc — BG-23: VAT breakdown (BT-116 through BT-119)
+- totals.sdoc — BG-22: Document totals (BT-106 through BT-115)
+- business-rules.sdoc — Calculation rules (BR-CO-10 through BR-CO-15)
+- french-2026.sdoc — French 2026 reform specific requirements
+<<<
+
+[/SECTION]

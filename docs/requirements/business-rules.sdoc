@@ -1,0 +1,86 @@
+[DOCUMENT]
+TITLE: Business Rules (BR-CO)
+
+[GRAMMAR]
+ELEMENTS:
+- TAG: REQUIREMENT
+  FIELDS:
+  - TITLE: UID
+    TYPE: String
+    REQUIRED: True
+  - TITLE: TITLE
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATEMENT
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATUS
+    TYPE: String
+    REQUIRED: True
+
+[TEXT]
+STATEMENT: >>>
+EN 16931 calculation business rules (BR-CO-10 through BR-CO-15).
+These rules define the arithmetic relationships between invoice
+amounts and ensure document-level consistency.
+<<<
+
+[REQUIREMENT]
+UID: BR-CO-10
+TITLE: Sum of line net amounts equals Invoice total without VAT
+STATEMENT: >>>
+The sum of the Invoice line net amounts shall equal the Invoice total
+amount without VAT. Enforced by Invoice::subtotal() which directly
+sums LineItem::line_total().
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BR-CO-11
+TITLE: Sum of allowances at document level
+STATEMENT: >>>
+Sum of allowances on document level shall be equal to the sum of
+document level allowance amounts. Not yet implemented (no
+document-level allowances in the model).
+<<<
+STATUS: TODO
+
+[REQUIREMENT]
+UID: BR-CO-12
+TITLE: Sum of charges at document level
+STATEMENT: >>>
+Sum of charges on document level shall be equal to the sum of
+document level charge amounts. Not yet implemented (no
+document-level charges in the model).
+<<<
+STATUS: TODO
+
+[REQUIREMENT]
+UID: BR-CO-13
+TITLE: Invoice total without VAT calculation
+STATEMENT: >>>
+Invoice total amount without VAT = sum of line net amounts -
+sum of allowances + sum of charges. Partially implemented:
+currently equal to sum of line net amounts (no allowances/charges).
+<<<
+STATUS: Partial
+
+[REQUIREMENT]
+UID: BR-CO-14
+TITLE: Invoice total with VAT calculation
+STATEMENT: >>>
+Invoice total amount with VAT = Invoice total without VAT + Invoice
+total VAT amount. Implemented by Invoice::total() = subtotal() +
+tax_total().
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BR-CO-15
+TITLE: Amount due for payment calculation
+STATEMENT: >>>
+Amount due for payment = Invoice total with VAT - paid amount.
+Partially implemented: currently equal to Invoice::total() as there
+is no prepaid amount field yet.
+<<<
+STATUS: Partial

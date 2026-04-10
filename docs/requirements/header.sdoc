@@ -1,0 +1,91 @@
+[DOCUMENT]
+TITLE: BG-2 Invoice Header
+
+[GRAMMAR]
+ELEMENTS:
+- TAG: REQUIREMENT
+  FIELDS:
+  - TITLE: UID
+    TYPE: String
+    REQUIRED: True
+  - TITLE: TITLE
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATEMENT
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATUS
+    TYPE: String
+    REQUIRED: True
+
+[TEXT]
+STATEMENT: >>>
+Invoice header fields from EN 16931 Business Group 2 (BG-2).
+These are the top-level scalar fields that identify and characterise
+the invoice document.
+<<<
+
+[REQUIREMENT]
+UID: BT-1
+TITLE: Invoice number
+STATEMENT: >>>
+A unique identification of the Invoice assigned by the Seller.
+Mapped to Invoice::number in the domain model.
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-2
+TITLE: Invoice issue date
+STATEMENT: >>>
+The date when the Invoice was issued. Stored as chrono::NaiveDate.
+CII format: YYYYMMDD (format 102). UBL format: YYYY-MM-DD.
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-3
+TITLE: Invoice type code
+STATEMENT: >>>
+A code specifying the functional type of the Invoice.
+Hardcoded to 380 (commercial invoice) in both CII and UBL serializers.
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-5
+TITLE: Invoice currency code
+STATEMENT: >>>
+The currency in which all Invoice amounts are given (ISO 4217).
+Mapped to Invoice::currency.
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-9
+TITLE: Payment due date
+STATEMENT: >>>
+The date by which payment is due. Optional field mapped to
+Invoice::due_date (Option<NaiveDate>).
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-22
+TITLE: Invoice note
+STATEMENT: >>>
+A textual note that gives unstructured information relevant to the
+Invoice as a whole. Mapped to Invoice::notes (Option<String>).
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-24
+TITLE: Specification identifier
+STATEMENT: >>>
+An identification of the specification containing the total set of
+rules regarding semantic content, cardinalities and business rules.
+Emitted via FacturXProfile::specification_identifier() for CII and
+UblProfile::customization_id() for UBL.
+<<<
+STATUS: Done

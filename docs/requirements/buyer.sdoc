@@ -1,0 +1,95 @@
+[DOCUMENT]
+TITLE: BG-7 Buyer
+
+[GRAMMAR]
+ELEMENTS:
+- TAG: REQUIREMENT
+  FIELDS:
+  - TITLE: UID
+    TYPE: String
+    REQUIRED: True
+  - TITLE: TITLE
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATEMENT
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATUS
+    TYPE: String
+    REQUIRED: True
+
+[TEXT]
+STATEMENT: >>>
+Buyer party information from EN 16931 Business Group 7 (BG-7).
+The buyer is represented by the same Party struct as the seller,
+serialized as ram:BuyerTradeParty (CII) or
+cac:AccountingCustomerParty (UBL).
+<<<
+
+[REQUIREMENT]
+UID: BT-44
+TITLE: Buyer name
+STATEMENT: >>>
+The full name of the Buyer. Mapped to Party::name.
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-47
+TITLE: Buyer legal registration identifier
+STATEMENT: >>>
+An identifier issued by an official registrar that identifies the
+Buyer as a legal entity or person. Mapped to Party::legal_id.
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-48
+TITLE: Buyer VAT identifier
+STATEMENT: >>>
+The Buyer's VAT identifier. Mapped to Party::vat_number.
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-49
+TITLE: Buyer electronic address
+STATEMENT: >>>
+Identifies the Buyer's electronic address. Mapped to Party::email.
+<<<
+STATUS: Partial
+
+[REQUIREMENT]
+UID: BT-50
+TITLE: Buyer address line 1
+STATEMENT: >>>
+The main address line in the Buyer's address. Mapped to Address::street.
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-52
+TITLE: Buyer city
+STATEMENT: >>>
+The common name of the city where the Buyer is located.
+Mapped to Address::city.
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-53
+TITLE: Buyer post code
+STATEMENT: >>>
+The postal code of the Buyer's address.
+Mapped to Address::postal_code.
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-55
+TITLE: Buyer country code
+STATEMENT: >>>
+A code that identifies the Buyer's country (ISO 3166-1 alpha-2).
+Mapped to Address::country_code.
+<<<
+STATUS: Done

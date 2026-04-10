@@ -1,0 +1,100 @@
+[DOCUMENT]
+TITLE: BG-4 Seller
+
+[GRAMMAR]
+ELEMENTS:
+- TAG: REQUIREMENT
+  FIELDS:
+  - TITLE: UID
+    TYPE: String
+    REQUIRED: True
+  - TITLE: TITLE
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATEMENT
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATUS
+    TYPE: String
+    REQUIRED: True
+
+[TEXT]
+STATEMENT: >>>
+Seller party information from EN 16931 Business Group 4 (BG-4).
+The seller is represented by the Party struct in the domain model,
+serialized as ram:SellerTradeParty (CII) or
+cac:AccountingSupplierParty (UBL).
+<<<
+
+[REQUIREMENT]
+UID: BT-27
+TITLE: Seller name
+STATEMENT: >>>
+The full formal name by which the Seller is registered in the
+national registry of legal entities or as a Taxable person.
+Mapped to Party::name.
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-30
+TITLE: Seller legal registration identifier
+STATEMENT: >>>
+An identifier issued by an official registrar that identifies the
+Seller as a legal entity or person. In France this is the SIRET.
+Mapped to Party::legal_id.
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-31
+TITLE: Seller VAT identifier
+STATEMENT: >>>
+The Seller's VAT identifier (e.g. FR12345678900).
+Mapped to Party::vat_number.
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-34
+TITLE: Seller electronic address
+STATEMENT: >>>
+Identifies the Seller's electronic address to which an application
+level response may be delivered. Mapped to Party::email.
+<<<
+STATUS: Partial
+
+[REQUIREMENT]
+UID: BT-35
+TITLE: Seller address line 1
+STATEMENT: >>>
+The main address line in an address. Mapped to Address::street.
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-37
+TITLE: Seller city
+STATEMENT: >>>
+The common name of the city where the Seller's address is located.
+Mapped to Address::city.
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-38
+TITLE: Seller post code
+STATEMENT: >>>
+The identifier for an addressable group of properties according to
+the relevant postal service. Mapped to Address::postal_code.
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-40
+TITLE: Seller country code
+STATEMENT: >>>
+A code that identifies the country (ISO 3166-1 alpha-2).
+Mapped to Address::country_code.
+<<<
+STATUS: Done

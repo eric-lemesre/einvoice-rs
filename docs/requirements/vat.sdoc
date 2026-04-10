@@ -1,0 +1,63 @@
+[DOCUMENT]
+TITLE: BG-23 VAT Breakdown
+
+[GRAMMAR]
+ELEMENTS:
+- TAG: REQUIREMENT
+  FIELDS:
+  - TITLE: UID
+    TYPE: String
+    REQUIRED: True
+  - TITLE: TITLE
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATEMENT
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATUS
+    TYPE: String
+    REQUIRED: True
+
+[TEXT]
+STATEMENT: >>>
+VAT breakdown information from EN 16931 Business Group 23 (BG-23).
+The breakdown groups invoice lines by VAT rate, computed by the
+vat_breakdown() helper in both CII and UBL serializers.
+<<<
+
+[REQUIREMENT]
+UID: BT-116
+TITLE: VAT category taxable amount
+STATEMENT: >>>
+Sum of all taxable amounts for the given VAT category. Computed by
+grouping line totals by tax rate in the serializer vat_breakdown()
+functions.
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-117
+TITLE: VAT category tax amount
+STATEMENT: >>>
+The total VAT amount for the given VAT category. Computed from
+LineItem::tax_amount() aggregated by rate group.
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-118
+TITLE: VAT category code
+STATEMENT: >>>
+Coded identification of a VAT category. Currently hardcoded to S
+(standard rate) per UNCL5305.
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-119
+TITLE: VAT category rate
+STATEMENT: >>>
+The VAT rate for the category, expressed as a percentage. Derived
+from LineItem::tax_rate converted to percent at serialization.
+<<<
+STATUS: Done

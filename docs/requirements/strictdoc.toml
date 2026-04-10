@@ -1,0 +1,14 @@
+[project]
+title = "einvoice-rs EN 16931 Requirements"
+
+features = [
+  "REQUIREMENT_TO_SOURCE_TRACEABILITY",
+  "SOURCE_FILE_LANGUAGE_PARSERS"
+]
+
+[project.source_paths]
+paths = [
+  "../../crates/core/src",
+  "../../crates/facturx/src",
+  "../../crates/ubl/src"
+]

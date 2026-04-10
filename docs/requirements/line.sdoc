@@ -1,0 +1,98 @@
+[DOCUMENT]
+TITLE: BG-25 Invoice Line
+
+[GRAMMAR]
+ELEMENTS:
+- TAG: REQUIREMENT
+  FIELDS:
+  - TITLE: UID
+    TYPE: String
+    REQUIRED: True
+  - TITLE: TITLE
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATEMENT
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATUS
+    TYPE: String
+    REQUIRED: True
+
+[TEXT]
+STATEMENT: >>>
+Invoice line item details from EN 16931 Business Group 25 (BG-25).
+Each line is represented by the LineItem struct, serialized as
+ram:IncludedSupplyChainTradeLineItem (CII) or cac:InvoiceLine (UBL).
+<<<
+
+[REQUIREMENT]
+UID: BT-126
+TITLE: Invoice line identifier
+STATEMENT: >>>
+A unique identifier for the individual line within the Invoice.
+Generated as a sequential index (1-based) during serialization.
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-129
+TITLE: Invoiced quantity
+STATEMENT: >>>
+The quantity of items (goods or services) that is charged in the
+Invoice line. Mapped to LineItem::quantity (rust_decimal::Decimal).
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-130
+TITLE: Invoiced quantity unit of measure
+STATEMENT: >>>
+The unit of measure that applies to the invoiced quantity.
+Currently hardcoded to C62 (one / unit) from UN/ECE Rec 20.
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-131
+TITLE: Invoice line net amount
+STATEMENT: >>>
+The total amount of the Invoice line, calculated as quantity * unit
+price. Computed by LineItem::line_total().
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-146
+TITLE: Item net price
+STATEMENT: >>>
+The price of an item, exclusive of VAT, after subtracting item price
+discount. Mapped to LineItem::unit_price (rust_decimal::Decimal).
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-151
+TITLE: Invoiced item VAT category code
+STATEMENT: >>>
+The VAT category code for the invoiced item.
+Currently hardcoded to S (standard rate) per UNCL5305.
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-152
+TITLE: Invoiced item VAT rate
+STATEMENT: >>>
+The VAT rate applicable to the item. Stored as a decimal fraction
+(e.g. 0.20 for 20%) in LineItem::tax_rate, converted to percent
+at serialization time.
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-153
+TITLE: Item name
+STATEMENT: >>>
+A name for an item. Mapped to LineItem::description.
+<<<
+STATUS: Done

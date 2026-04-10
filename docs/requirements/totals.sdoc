@@ -1,0 +1,71 @@
+[DOCUMENT]
+TITLE: BG-22 Document Totals
+
+[GRAMMAR]
+ELEMENTS:
+- TAG: REQUIREMENT
+  FIELDS:
+  - TITLE: UID
+    TYPE: String
+    REQUIRED: True
+  - TITLE: TITLE
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATEMENT
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATUS
+    TYPE: String
+    REQUIRED: True
+
+[TEXT]
+STATEMENT: >>>
+Document-level monetary totals from EN 16931 Business Group 22 (BG-22).
+Computed by Invoice::subtotal(), Invoice::tax_total() and
+Invoice::total() in the domain model.
+<<<
+
+[REQUIREMENT]
+UID: BT-106
+TITLE: Sum of Invoice line net amount
+STATEMENT: >>>
+Sum of all Invoice line net amounts. Computed by Invoice::subtotal()
+which sums LineItem::line_total() across all lines.
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-109
+TITLE: Invoice total amount without VAT
+STATEMENT: >>>
+The total amount of the Invoice without VAT. Equal to
+Invoice::subtotal() (no document-level allowances/charges yet).
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-110
+TITLE: Invoice total VAT amount
+STATEMENT: >>>
+The total VAT amount for the Invoice. Computed by
+Invoice::tax_total() summing LineItem::tax_amount() across all lines.
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-112
+TITLE: Invoice total amount with VAT
+STATEMENT: >>>
+The total amount of the Invoice with VAT. Computed by
+Invoice::total() = subtotal() + tax_total().
+<<<
+STATUS: Done
+
+[REQUIREMENT]
+UID: BT-115
+TITLE: Amount due for payment
+STATEMENT: >>>
+The outstanding amount that is requested to be paid. Currently equal
+to Invoice::total() (no prepaid amount support yet).
+<<<
+STATUS: Done
