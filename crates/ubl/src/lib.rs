@@ -6,8 +6,14 @@
 //!
 //! Le format UBL est à 100 % XML (pas d'enveloppe PDF), ce qui en fait le
 //! format de choix pour la transmission automatisée (EDI, PEPPOL, PPF/PDP).
+//!
+//! L'écriture concrète du document vit dans [`invoice`], qui pilote une
+//! pipeline `quick_xml::Writer` pour garder le contrôle de l'ordre canonique
+//! des éléments imposé par les XSD OASIS et les Schematron PEPPOL.
 
-use einvoice_core::{Error, Invoice, InvoiceSerializer, Result};
+pub mod invoice;
+
+use einvoice_core::{Invoice, InvoiceSerializer, Result};
 
 /// Profils UBL supportés.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
@@ -52,12 +58,8 @@ impl UblSerializer {
 }
 
 impl InvoiceSerializer for UblSerializer {
-    fn serialize(&self, _invoice: &Invoice) -> Result<Vec<u8>> {
-        // TODO : construire l'élément racine `<Invoice>` avec les namespaces
-        // UBL (cbc, cac…) et remplir en fonction du profil.
-        Err(Error::serialization(
-            "UBL 2.1 serializer not yet implemented",
-        ))
+    fn serialize(&self, invoice: &Invoice) -> Result<Vec<u8>> {
+        invoice::write_invoice(invoice, self.profile)
     }
 
     fn content_type(&self) -> &'static str {

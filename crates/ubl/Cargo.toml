@@ -14,3 +14,7 @@ quick-xml = { workspace = true }
 serde = { workspace = true }
 chrono = { workspace = true }
 rust_decimal = { workspace = true }
+
+[dev-dependencies]
+rust_decimal_macros = "1"
+uuid = { workspace = true }

@@ -554,7 +554,9 @@ dependencies = [
  "einvoice-core",
  "quick-xml",
  "rust_decimal",
+ "rust_decimal_macros",
  "serde",
+ "uuid",
 ]
 
 [[package]]

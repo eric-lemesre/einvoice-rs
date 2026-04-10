@@ -54,10 +54,12 @@ just lint           # cargo clippy -- -D warnings
 ## Project status
 
 Project is in its bootstrap phase. `einvoice-facturx::FacturXSerializer`
-now produces a valid **Cross Industry Invoice** XML (UN/CEFACT D22B) via
-`FacturXSerializer::serialize_xml`. The `ubl` and `delivery` crates still
-expose typed stubs. The next implementation milestone is the PDF/A-3
-envelope wrapper around the CII XML plus the UBL 2.1 serializer.
+produces a valid **Cross Industry Invoice** XML (UN/CEFACT D22B) via
+`FacturXSerializer::serialize_xml`, and `einvoice-ubl::UblSerializer`
+emits a canonical **UBL 2.1 Invoice** document for both the Chorus Pro
+and PEPPOL BIS Billing 3.0 profiles. The `delivery` crate still exposes
+typed stubs. The next implementation milestone is the PDF/A-3 envelope
+wrapper around the CII XML and the Chorus Pro / PISTE HTTP client.
 
 ## References
 
