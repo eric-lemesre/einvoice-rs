@@ -30,6 +30,13 @@ type XmlWriter = Writer<Vec<u8>>;
 type XmlResult = std::result::Result<(), quick_xml::Error>;
 
 /// Sérialise une [`Invoice`] en XML CII pour le profil Factur-X donné.
+/// @relation(BT-1, scope=function)
+/// @relation(BT-2, scope=function)
+/// @relation(BT-3, scope=function)
+/// @relation(BT-5, scope=function)
+/// @relation(BT-9, scope=function)
+/// @relation(BT-22, scope=function)
+/// @relation(BT-24, scope=function)
 pub fn write_cross_industry_invoice(invoice: &Invoice, profile: FacturXProfile) -> Result<Vec<u8>> {
     let mut writer: XmlWriter = Writer::new_with_indent(Vec::new(), b' ', 2);
     write_document(&mut writer, invoice, profile)
@@ -109,6 +116,14 @@ fn write_supply_chain_trade_transaction(w: &mut XmlWriter, invoice: &Invoice) ->
     Ok(())
 }
 
+/// @relation(BT-126, scope=function)
+/// @relation(BT-129, scope=function)
+/// @relation(BT-130, scope=function)
+/// @relation(BT-131, scope=function)
+/// @relation(BT-146, scope=function)
+/// @relation(BT-151, scope=function)
+/// @relation(BT-152, scope=function)
+/// @relation(BT-153, scope=function)
 fn write_trade_line_item(w: &mut XmlWriter, line_id: usize, line: &LineItem) -> XmlResult {
     open(w, "ram:IncludedSupplyChainTradeLineItem")?;
 
@@ -165,6 +180,14 @@ fn write_header_trade_agreement(w: &mut XmlWriter, invoice: &Invoice) -> XmlResu
     Ok(())
 }
 
+/// @relation(BT-27, scope=function)
+/// @relation(BT-30, scope=function)
+/// @relation(BT-31, scope=function)
+/// @relation(BT-34, scope=function)
+/// @relation(BT-35, scope=function)
+/// @relation(BT-37, scope=function)
+/// @relation(BT-38, scope=function)
+/// @relation(BT-40, scope=function)
 fn write_party(w: &mut XmlWriter, element_name: &str, party: &Party) -> XmlResult {
     open(w, element_name)?;
     element(w, "ram:Name", &party.name)?;
@@ -200,6 +223,15 @@ fn write_header_trade_delivery(w: &mut XmlWriter) -> XmlResult {
     )))
 }
 
+/// @relation(BT-106, scope=function)
+/// @relation(BT-109, scope=function)
+/// @relation(BT-110, scope=function)
+/// @relation(BT-112, scope=function)
+/// @relation(BT-115, scope=function)
+/// @relation(BT-116, scope=function)
+/// @relation(BT-117, scope=function)
+/// @relation(BT-118, scope=function)
+/// @relation(BT-119, scope=function)
 fn write_header_trade_settlement(w: &mut XmlWriter, invoice: &Invoice) -> XmlResult {
     open(w, "ram:ApplicableHeaderTradeSettlement")?;
     element(w, "ram:InvoiceCurrencyCode", &invoice.currency)?;
@@ -381,6 +413,8 @@ mod tests {
         String::from_utf8(bytes).expect("valid utf-8")
     }
 
+    /// @relation(BT-1, scope=function)
+    /// @relation(BT-24, scope=function)
     #[test]
     fn declares_xml_header_and_namespaces() {
         let xml = write(&sample_invoice(), FacturXProfile::En16931);
@@ -393,6 +427,7 @@ mod tests {
         assert!(xml.contains("xmlns:udt="));
     }
 
+    /// @relation(BT-24, scope=function)
     #[test]
     fn embeds_profile_identifier() {
         let xml = write(&sample_invoice(), FacturXProfile::En16931);
@@ -401,6 +436,10 @@ mod tests {
         assert!(xml_min.contains("<ram:ID>urn:factur-x.eu:1p0:minimum</ram:ID>"));
     }
 
+    /// @relation(BT-1, scope=function)
+    /// @relation(BT-2, scope=function)
+    /// @relation(BT-3, scope=function)
+    /// @relation(BT-22, scope=function)
     #[test]
     fn writes_header_metadata() {
         let xml = write(&sample_invoice(), FacturXProfile::En16931);
@@ -410,6 +449,13 @@ mod tests {
         assert!(xml.contains("<ram:Content>Paiement à 30 jours</ram:Content>"));
     }
 
+    /// @relation(BT-27, scope=function)
+    /// @relation(BT-31, scope=function)
+    /// @relation(BT-34, scope=function)
+    /// @relation(BT-35, scope=function)
+    /// @relation(BT-37, scope=function)
+    /// @relation(BT-38, scope=function)
+    /// @relation(BT-40, scope=function)
     #[test]
     fn writes_seller_and_buyer() {
         let xml = write(&sample_invoice(), FacturXProfile::En16931);
@@ -422,6 +468,12 @@ mod tests {
         assert!(xml.contains("<ram:URIID schemeID=\"EM\">billing@acme.test</ram:URIID>"));
     }
 
+    /// @relation(BT-126, scope=function)
+    /// @relation(BT-129, scope=function)
+    /// @relation(BT-130, scope=function)
+    /// @relation(BT-131, scope=function)
+    /// @relation(BT-146, scope=function)
+    /// @relation(BT-153, scope=function)
     #[test]
     fn writes_lines_and_line_totals() {
         let xml = write(&sample_invoice(), FacturXProfile::En16931);
@@ -435,6 +487,15 @@ mod tests {
         assert!(xml.contains("<ram:LineTotalAmount>50.00</ram:LineTotalAmount>"));
     }
 
+    /// @relation(BT-106, scope=function)
+    /// @relation(BT-109, scope=function)
+    /// @relation(BT-110, scope=function)
+    /// @relation(BT-112, scope=function)
+    /// @relation(BT-115, scope=function)
+    /// @relation(BT-116, scope=function)
+    /// @relation(BT-117, scope=function)
+    /// @relation(BT-118, scope=function)
+    /// @relation(BT-119, scope=function)
     #[test]
     fn writes_vat_breakdown_and_totals() {
         let xml = write(&sample_invoice(), FacturXProfile::En16931);
@@ -449,6 +510,7 @@ mod tests {
         assert!(xml.contains("<ram:DuePayableAmount>300.00</ram:DuePayableAmount>"));
     }
 
+    /// @relation(BT-9, scope=function)
     #[test]
     fn writes_payment_terms_when_due_date_set() {
         let xml = write(&sample_invoice(), FacturXProfile::En16931);
@@ -456,6 +518,10 @@ mod tests {
         assert!(xml.contains("<udt:DateTimeString format=\"102\">20260509</udt:DateTimeString>"));
     }
 
+    /// @relation(BT-116, scope=function)
+    /// @relation(BT-117, scope=function)
+    /// @relation(BT-119, scope=function)
+    /// @relation(BT-152, scope=function)
     #[test]
     fn groups_multiple_vat_rates() {
         let mut invoice = sample_invoice();
@@ -474,6 +540,7 @@ mod tests {
         assert!(xml.contains("<ram:RateApplicablePercent>20.00</ram:RateApplicablePercent>"));
     }
 
+    /// @relation(BT-1, scope=function)
     #[test]
     fn document_is_well_formed_xml() {
         use quick_xml::events::Event as RxEvent;

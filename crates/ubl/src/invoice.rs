@@ -30,6 +30,12 @@ type XmlWriter = Writer<Vec<u8>>;
 type XmlResult = std::result::Result<(), quick_xml::Error>;
 
 /// Sérialise une [`Invoice`] en XML UBL 2.1 pour le profil donné.
+/// @relation(BT-1, scope=function)
+/// @relation(BT-2, scope=function)
+/// @relation(BT-3, scope=function)
+/// @relation(BT-5, scope=function)
+/// @relation(BT-9, scope=function)
+/// @relation(BT-22, scope=function)
 pub fn write_invoice(invoice: &Invoice, profile: UblProfile) -> Result<Vec<u8>> {
     let mut writer: XmlWriter = Writer::new_with_indent(Vec::new(), b' ', 2);
     write_document(&mut writer, invoice, profile)
@@ -61,6 +67,7 @@ fn write_document(w: &mut XmlWriter, invoice: &Invoice, profile: UblProfile) -> 
 
 // ---------- Header (scalar fields) ----------
 
+/// @relation(BT-24, scope=function)
 fn write_header(w: &mut XmlWriter, invoice: &Invoice, profile: UblProfile) -> XmlResult {
     element(w, "cbc:CustomizationID", profile.customization_id())?;
     element(w, "cbc:ProfileID", profile.profile_id())?;
@@ -94,6 +101,14 @@ fn write_customer_party(w: &mut XmlWriter, party: &Party) -> XmlResult {
     Ok(())
 }
 
+/// @relation(BT-27, scope=function)
+/// @relation(BT-30, scope=function)
+/// @relation(BT-31, scope=function)
+/// @relation(BT-34, scope=function)
+/// @relation(BT-35, scope=function)
+/// @relation(BT-37, scope=function)
+/// @relation(BT-38, scope=function)
+/// @relation(BT-40, scope=function)
 fn write_party(w: &mut XmlWriter, party: &Party) -> XmlResult {
     open(w, "cac:Party")?;
 
@@ -138,6 +153,10 @@ fn write_party(w: &mut XmlWriter, party: &Party) -> XmlResult {
 
 // ---------- Tax totals ----------
 
+/// @relation(BT-116, scope=function)
+/// @relation(BT-117, scope=function)
+/// @relation(BT-118, scope=function)
+/// @relation(BT-119, scope=function)
 fn write_tax_total(w: &mut XmlWriter, invoice: &Invoice) -> XmlResult {
     let currency = invoice.currency.as_str();
     open(w, "cac:TaxTotal")?;
@@ -177,6 +196,11 @@ fn write_tax_total(w: &mut XmlWriter, invoice: &Invoice) -> XmlResult {
 
 // ---------- Legal monetary total ----------
 
+/// @relation(BT-106, scope=function)
+/// @relation(BT-109, scope=function)
+/// @relation(BT-110, scope=function)
+/// @relation(BT-112, scope=function)
+/// @relation(BT-115, scope=function)
 fn write_legal_monetary_total(w: &mut XmlWriter, invoice: &Invoice) -> XmlResult {
     let currency = invoice.currency.as_str();
     let subtotal = invoice.subtotal();
@@ -213,6 +237,14 @@ fn write_legal_monetary_total(w: &mut XmlWriter, invoice: &Invoice) -> XmlResult
 
 // ---------- Invoice lines ----------
 
+/// @relation(BT-126, scope=function)
+/// @relation(BT-129, scope=function)
+/// @relation(BT-130, scope=function)
+/// @relation(BT-131, scope=function)
+/// @relation(BT-146, scope=function)
+/// @relation(BT-151, scope=function)
+/// @relation(BT-152, scope=function)
+/// @relation(BT-153, scope=function)
 fn write_invoice_line(
     w: &mut XmlWriter,
     line_id: usize,
@@ -393,6 +425,8 @@ mod tests {
         String::from_utf8(bytes).expect("valid utf-8")
     }
 
+    /// @relation(BT-1, scope=function)
+    /// @relation(BT-24, scope=function)
     #[test]
     fn declares_xml_header_and_namespaces() {
         let xml = write(&sample_invoice(), UblProfile::PeppolBis3);
@@ -406,6 +440,7 @@ mod tests {
         ));
     }
 
+    /// @relation(BT-24, scope=function)
     #[test]
     fn embeds_profile_identifiers() {
         let xml_peppol = write(&sample_invoice(), UblProfile::PeppolBis3);
@@ -420,6 +455,12 @@ mod tests {
         );
     }
 
+    /// @relation(BT-1, scope=function)
+    /// @relation(BT-2, scope=function)
+    /// @relation(BT-3, scope=function)
+    /// @relation(BT-5, scope=function)
+    /// @relation(BT-9, scope=function)
+    /// @relation(BT-22, scope=function)
     #[test]
     fn writes_header_metadata() {
         let xml = write(&sample_invoice(), UblProfile::PeppolBis3);
@@ -431,6 +472,14 @@ mod tests {
         assert!(xml.contains("<cbc:DocumentCurrencyCode>EUR</cbc:DocumentCurrencyCode>"));
     }
 
+    /// @relation(BT-27, scope=function)
+    /// @relation(BT-30, scope=function)
+    /// @relation(BT-31, scope=function)
+    /// @relation(BT-34, scope=function)
+    /// @relation(BT-35, scope=function)
+    /// @relation(BT-37, scope=function)
+    /// @relation(BT-38, scope=function)
+    /// @relation(BT-40, scope=function)
     #[test]
     fn writes_supplier_and_customer_parties() {
         let xml = write(&sample_invoice(), UblProfile::PeppolBis3);
@@ -448,6 +497,11 @@ mod tests {
         assert!(xml.contains("<cbc:CompanyID>FR98765432100</cbc:CompanyID>"));
     }
 
+    /// @relation(BT-110, scope=function)
+    /// @relation(BT-116, scope=function)
+    /// @relation(BT-117, scope=function)
+    /// @relation(BT-118, scope=function)
+    /// @relation(BT-119, scope=function)
     #[test]
     fn writes_tax_total_and_subtotal() {
         let xml = write(&sample_invoice(), UblProfile::PeppolBis3);
@@ -459,6 +513,10 @@ mod tests {
         assert!(xml.matches("<cbc:ID>VAT</cbc:ID>").count() >= 2);
     }
 
+    /// @relation(BT-106, scope=function)
+    /// @relation(BT-109, scope=function)
+    /// @relation(BT-112, scope=function)
+    /// @relation(BT-115, scope=function)
     #[test]
     fn writes_legal_monetary_total() {
         let xml = write(&sample_invoice(), UblProfile::PeppolBis3);
@@ -475,6 +533,14 @@ mod tests {
         assert!(xml.contains("<cbc:PayableAmount currencyID=\"EUR\">300.00</cbc:PayableAmount>"));
     }
 
+    /// @relation(BT-126, scope=function)
+    /// @relation(BT-129, scope=function)
+    /// @relation(BT-130, scope=function)
+    /// @relation(BT-131, scope=function)
+    /// @relation(BT-146, scope=function)
+    /// @relation(BT-151, scope=function)
+    /// @relation(BT-152, scope=function)
+    /// @relation(BT-153, scope=function)
     #[test]
     fn writes_invoice_lines() {
         let xml = write(&sample_invoice(), UblProfile::PeppolBis3);
@@ -489,6 +555,10 @@ mod tests {
         assert!(xml.contains("<cbc:PriceAmount currencyID=\"EUR\">50.00</cbc:PriceAmount>"));
     }
 
+    /// @relation(BT-116, scope=function)
+    /// @relation(BT-117, scope=function)
+    /// @relation(BT-119, scope=function)
+    /// @relation(BT-152, scope=function)
     #[test]
     fn groups_multiple_vat_rates() {
         let mut invoice = sample_invoice();
@@ -509,6 +579,7 @@ mod tests {
         assert!(xml.contains("<cbc:TaxAmount currencyID=\"EUR\">58.25</cbc:TaxAmount>"));
     }
 
+    /// @relation(BT-1, scope=function)
     #[test]
     fn document_is_well_formed_xml() {
         use quick_xml::events::Event as RxEvent;
@@ -527,6 +598,10 @@ mod tests {
         }
     }
 
+    /// @relation(BT-9, scope=function)
+    /// @relation(BT-22, scope=function)
+    /// @relation(BT-31, scope=function)
+    /// @relation(BT-34, scope=function)
     #[test]
     fn omits_optional_fields_when_missing() {
         let mut invoice = sample_invoice();

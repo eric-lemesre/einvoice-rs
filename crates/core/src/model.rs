@@ -39,6 +39,11 @@ impl InvoiceStatus {
 }
 
 /// Facture — racine du modèle domaine.
+/// @relation(BT-1, scope=function)
+/// @relation(BT-2, scope=function)
+/// @relation(BT-5, scope=function)
+/// @relation(BT-9, scope=function)
+/// @relation(BT-22, scope=function)
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Invoice {
     pub id: Uuid,
@@ -69,22 +74,31 @@ fn default_status() -> InvoiceStatus {
 
 impl Invoice {
     /// BT-106 / BT-109 Total hors taxes (somme des lignes).
+    /// @relation(BT-106, scope=function)
+    /// @relation(BT-109, scope=function)
     pub fn subtotal(&self) -> Decimal {
         self.lines.iter().map(LineItem::line_total).sum()
     }
 
     /// BT-110 Total des taxes (TVA) toutes lignes confondues.
+    /// @relation(BT-110, scope=function)
     pub fn tax_total(&self) -> Decimal {
         self.lines.iter().map(LineItem::tax_amount).sum()
     }
 
     /// BT-112 / BT-115 Total TTC.
+    /// @relation(BT-112, scope=function)
+    /// @relation(BT-115, scope=function)
     pub fn total(&self) -> Decimal {
         self.subtotal() + self.tax_total()
     }
 }
 
 /// Partie prenante : émetteur ou destinataire.
+/// @relation(BT-27, scope=function)
+/// @relation(BT-30, scope=function)
+/// @relation(BT-31, scope=function)
+/// @relation(BT-34, scope=function)
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Party {
     /// BT-27 (seller) / BT-44 (buyer) Name.
@@ -102,6 +116,10 @@ pub struct Party {
 }
 
 /// Adresse postale.
+/// @relation(BT-35, scope=function)
+/// @relation(BT-37, scope=function)
+/// @relation(BT-38, scope=function)
+/// @relation(BT-40, scope=function)
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Address {
     /// BT-35 (seller) / BT-50 (buyer) Address line 1.
@@ -115,6 +133,10 @@ pub struct Address {
 }
 
 /// Ligne de facture.
+/// @relation(BT-153, scope=function)
+/// @relation(BT-129, scope=function)
+/// @relation(BT-146, scope=function)
+/// @relation(BT-152, scope=function)
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LineItem {
     /// BT-153 Item name.
@@ -129,11 +151,13 @@ pub struct LineItem {
 
 impl LineItem {
     /// BT-131 Montant hors taxes de la ligne.
+    /// @relation(BT-131, scope=function)
     pub fn line_total(&self) -> Decimal {
         self.quantity * self.unit_price
     }
 
     /// BT-117 Montant de TVA de la ligne.
+    /// @relation(BT-117, scope=function)
     pub fn tax_amount(&self) -> Decimal {
         self.line_total() * self.tax_rate
     }
@@ -153,6 +177,11 @@ mod tests {
         }
     }
 
+    /// @relation(BT-106, scope=function)
+    /// @relation(BT-110, scope=function)
+    /// @relation(BT-112, scope=function)
+    /// @relation(BT-129, scope=function)
+    /// @relation(BT-146, scope=function)
     #[test]
     fn invoice_totals_are_correct() {
         let invoice = Invoice {
