@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "=== pre-commit: fmt-check ==="
+just fmt-check
+
+echo "=== pre-commit: lint ==="
+just lint
+
+echo "=== pre-commit: tests (core, facturx, ubl) ==="
+cargo test -p einvoice-core -p einvoice-facturx -p einvoice-ubl
+
+echo "=== pre-commit: OK ==="

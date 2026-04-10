@@ -2,7 +2,7 @@
 //! (<https://piste.gouv.fr>).
 //!
 //! Chorus Pro est la plateforme publique française de facturation
-//! électronique. L'accès se fait via PISTE avec un flux OAuth2
+//! électronique. L'accès se fait via PISTE avec un flux `OAuth2`
 //! `client_credentials` qui produit un jeton d'accès valide
 //! ~1h, utilisé pour signer les appels à `/cpro/factures/v1/deposer`.
 
@@ -33,7 +33,7 @@ impl ChorusProClient {
         }
     }
 
-    /// Obtient un jeton OAuth2 via le flow `client_credentials` de PISTE.
+    /// Obtient un jeton `OAuth2` via le flow `client_credentials` de PISTE.
     pub async fn authenticate(&mut self) -> Result<()> {
         // TODO : POST {base_url}/oauth/api/v1/token
         // avec grant_type=client_credentials, scope=openid

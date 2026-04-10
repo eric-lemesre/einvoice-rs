@@ -17,3 +17,6 @@ tracing = { workspace = true }
 
 lettre = { workspace = true }
 reqwest = { workspace = true }
+
+[lints]
+workspace = true

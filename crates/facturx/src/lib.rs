@@ -1,4 +1,4 @@
-//! Sérialiseur **Factur-X** (ZUGFeRD 2.x).
+//! Sérialiseur **Factur-X** (`ZUGFeRD` 2.x).
 //!
 //! Factur-X est un format hybride : un PDF/A-3 contient un fichier XML CII
 //! (UN/CEFACT Cross Industry Invoice) conforme à **EN 16931**. Plusieurs

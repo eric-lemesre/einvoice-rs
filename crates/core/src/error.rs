@@ -25,7 +25,7 @@ pub enum Error {
     #[error("io: {0}")]
     Io(#[from] std::io::Error),
 
-    /// Erreur JSON standard (serde_json).
+    /// Erreur JSON standard (`serde_json`).
     #[error("json: {0}")]
     Json(#[from] serde_json::Error),
 }

@@ -1,12 +1,12 @@
 //! Sérialiseur **Cross Industry Invoice (CII)** — UN/CEFACT D22B.
 //!
 //! Produit un document `rsm:CrossIndustryInvoice` conforme à la norme
-//! UN/CEFACT utilisée par Factur-X 1.08 / ZUGFeRD 2.4. L'écriture se fait
+//! UN/CEFACT utilisée par Factur-X 1.08 / `ZUGFeRD` 2.4. L'écriture se fait
 //! via une pipeline explicite `quick_xml::Writer` car CII impose un ordre
 //! strict des éléments que les dériveurs serde ne savent pas garantir.
 //!
 //! Voir [`docs/references/cii-uncefact.md`](../../../../docs/references/cii-uncefact.md)
-//! pour un rappel de la structure générale et du mapping BT → XPath.
+//! pour un rappel de la structure générale et du mapping BT → `XPath`.
 
 use einvoice_core::{Error, Invoice, LineItem, Party, Result};
 use quick_xml::{
@@ -78,7 +78,7 @@ fn write_exchanged_document(w: &mut XmlWriter, invoice: &Invoice) -> XmlResult {
         w,
         "udt:DateTimeString",
         &[("format", "102")],
-        &format_date_compact(&invoice.issue_date),
+        &format_date_compact(invoice.issue_date),
     )?;
     close(w, "ram:IssueDateTime")?;
 
@@ -221,7 +221,7 @@ fn write_header_trade_settlement(w: &mut XmlWriter, invoice: &Invoice) -> XmlRes
             w,
             "udt:DateTimeString",
             &[("format", "102")],
-            &format_date_compact(&due),
+            &format_date_compact(due),
         )?;
         close(w, "ram:DueDateDateTime")?;
         close(w, "ram:SpecifiedTradePaymentTerms")?;
@@ -289,7 +289,7 @@ fn format_percent(rate_fraction: Decimal) -> String {
     format!("{:.2}", rate_fraction * Decimal::from(100))
 }
 
-fn format_date_compact(date: &chrono::NaiveDate) -> String {
+fn format_date_compact(date: chrono::NaiveDate) -> String {
     date.format("%Y%m%d").to_string()
 }
 

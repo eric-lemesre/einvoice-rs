@@ -3,7 +3,7 @@
 //! Deux canaux sont prévus :
 //! - [`email`] — envoi SMTP via la crate `lettre` (facture en pièce jointe)
 //! - [`chorus_pro`] — dépôt sur la plateforme publique française via l'API
-//!   PISTE (OAuth2 client_credentials).
+//!   PISTE (`OAuth2` `client_credentials`).
 //!
 //! Les adaptateurs retournent tous un [`DeliveryReceipt`] commun qui permet
 //! de tracer dans la base (`invoice_events`) le canal utilisé, l'identifiant

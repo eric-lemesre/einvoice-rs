@@ -53,6 +53,30 @@ test:
 # Suite complète: fmt + lint + test
 check: fmt-check lint test
 
+# Vérifie les licences, advisories et bans (cargo-deny requis)
+deny:
+    cargo deny check
+
+# Rapport de couverture HTML (cargo-llvm-cov requis)
+coverage:
+    cargo llvm-cov --workspace --html --open
+
+# Rapport de couverture LCOV (pour CI / Codecov)
+coverage-lcov:
+    cargo llvm-cov --workspace --lcov --output-path lcov.info
+
+# Nettoie les artefacts de couverture
+coverage-clean:
+    cargo llvm-cov clean --workspace
+
+# Tests par mutation sur les crates métier (cargo-mutants requis)
+mutants:
+    cargo mutants --package einvoice-core --package einvoice-facturx --package einvoice-ubl --timeout 120 --jobs 2
+
+# Configure git pour utiliser les hooks du dépôt
+setup-hooks:
+    git config core.hooksPath .githooks
+
 # --- Base de données ----------------------------------------------------------
 
 # Lance une instance PostgreSQL locale via Docker

@@ -39,8 +39,7 @@ impl UblProfile {
     /// Identifiant `ProfileID` correspondant.
     pub fn profile_id(&self) -> &'static str {
         match self {
-            Self::ChorusPro => "urn:fdc:peppol.eu:2017:poacc:billing:01:1.0",
-            Self::PeppolBis3 => "urn:fdc:peppol.eu:2017:poacc:billing:01:1.0",
+            Self::ChorusPro | Self::PeppolBis3 => "urn:fdc:peppol.eu:2017:poacc:billing:01:1.0",
         }
     }
 }

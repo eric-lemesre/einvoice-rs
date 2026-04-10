@@ -1,7 +1,7 @@
 //! Point d'entrée de l'API REST `einvoice-api`.
 //!
 //! Pour l'instant l'API expose uniquement `/` et `/health`. La persistance
-//! PostgreSQL (via `sqlx`) et les routes CRUD `/invoices/*` seront ajoutées
+//! `PostgreSQL` (via `sqlx`) et les routes CRUD `/invoices/*` seront ajoutées
 //! lorsque le sérialiseur Factur-X sera implémenté.
 
 use std::net::SocketAddr;

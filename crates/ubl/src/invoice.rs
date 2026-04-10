@@ -65,9 +65,9 @@ fn write_header(w: &mut XmlWriter, invoice: &Invoice, profile: UblProfile) -> Xm
     element(w, "cbc:CustomizationID", profile.customization_id())?;
     element(w, "cbc:ProfileID", profile.profile_id())?;
     element(w, "cbc:ID", &invoice.number)?;
-    element(w, "cbc:IssueDate", &format_date(&invoice.issue_date))?;
+    element(w, "cbc:IssueDate", &format_date(invoice.issue_date))?;
     if let Some(due) = invoice.due_date {
-        element(w, "cbc:DueDate", &format_date(&due))?;
+        element(w, "cbc:DueDate", &format_date(due))?;
     }
     // UN/ECE 1001 : 380 = commercial invoice.
     element(w, "cbc:InvoiceTypeCode", "380")?;
@@ -301,7 +301,7 @@ fn format_percent(rate_fraction: Decimal) -> String {
     format!("{:.2}", rate_fraction * Decimal::from(100))
 }
 
-fn format_date(date: &chrono::NaiveDate) -> String {
+fn format_date(date: chrono::NaiveDate) -> String {
     date.format("%Y-%m-%d").to_string()
 }
 

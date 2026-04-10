@@ -32,7 +32,7 @@ docs/
               # Chorus Pro, French 2026 reform, mandatory fields
 migrations/   # sqlx migrations (initial schema: invoices + invoice_events)
 .github/
-  workflows/  # CI: rustfmt, clippy -D warnings, test (with Postgres), cargo-audit
+  workflows/  # CI: rustfmt, clippy -D warnings, test (with Postgres), cargo-deny, coverage
 ```
 
 Each crate is pinned via `workspace.dependencies` in the root
@@ -44,7 +44,8 @@ crate manifests with `{ workspace = true }`.
 ## Dev environment
 
 - Rust toolchain is pinned in [`rust-toolchain.toml`](rust-toolchain.toml)
-  (`stable`, `minimal` profile, with `rustfmt` + `clippy`).
+  (`stable`, `minimal` profile, with `rustfmt` + `clippy` +
+  `llvm-tools-preview`).
 - PostgreSQL 16+ required for the `api` crate and migrations.
 - [`just`](https://github.com/casey/just) is the canonical task runner.
 - [`sqlx-cli`](https://crates.io/crates/sqlx-cli) ≥ 0.8 for migrations.
@@ -65,6 +66,12 @@ local and CI parity.
 | `just fmt-check`   | `cargo fmt --all -- --check` (CI-equivalent)          |
 | `just lint`        | `cargo clippy --workspace --all-targets -- -D warnings` |
 | `just check`       | `fmt-check` + `lint` + `test` — **run before every commit** |
+| `just deny`        | `cargo deny check` — licences, advisories, bans       |
+| `just coverage`    | `cargo llvm-cov --workspace --html --open`             |
+| `just coverage-lcov` | LCOV output for CI / Codecov                         |
+| `just coverage-clean` | Clean coverage artefacts                             |
+| `just mutants`     | Mutation testing on core/facturx/ubl                   |
+| `just setup-hooks` | Configure git to use `.githooks/` pre-commit hook      |
 | `just run-api`     | `cargo run -p einvoice-api`                           |
 | `just run-web`     | `cargo run -p einvoice-web`                           |
 | `just db-up`       | `docker run` a local PostgreSQL 16                    |
@@ -77,8 +84,10 @@ name). Per-crate checks: `cargo check -p einvoice-ubl`.
 
 **CI must stay green.** GitHub Actions runs `cargo fmt -- --check`,
 `cargo clippy -D warnings`, `cargo test --workspace --all-targets`
-against a live PostgreSQL service, and `cargo audit`. Reproduce the full
-pipeline locally with `just check` and `cargo audit` before pushing.
+against a live PostgreSQL service, `cargo-deny` (licences, advisories)
+and code coverage via `cargo-llvm-cov` + Codecov. Mutation testing runs
+weekly. Reproduce the full pipeline locally with `just check` and
+`just deny` before pushing.
 
 ## Code style and conventions
 
@@ -150,8 +159,9 @@ pipeline locally with `just check` and `cargo audit` before pushing.
   workspace `sqlx` features. Do **not** enable `tls-native-tls`.
 - All HTTP clients (`reqwest`, `lettre`) go through `rustls-tls`. Stay
   away from `default-features = true` on these crates.
-- `cargo audit` runs in CI. When it flags an advisory, upgrade rather
-  than ignore. An ignore requires a justification in the commit body.
+- `cargo-deny` replaces `cargo-audit` in CI and also checks licences
+  and banned crates. When it flags an advisory, upgrade rather than
+  ignore. An ignore requires a justification in the commit body.
 
 ## Invoice domain rules
 
@@ -209,6 +219,16 @@ pipeline locally with `just check` and `cargo audit` before pushing.
   responsibility in `README.md` and `docs/README.md`.
 - Reference sheets must quote field identifiers (`BT-*`, URNs,
   endpoint paths) **verbatim** — never paraphrase them.
+
+## Git hooks
+
+Run `just setup-hooks` to point `core.hooksPath` at `.githooks/`.
+The pre-commit hook runs `just fmt-check`, `just lint` and
+`cargo test -p einvoice-core -p einvoice-facturx -p einvoice-ubl`
+(the `api`/`web` crates are skipped because they need PostgreSQL).
+
+If a hook fails, fix the issue and create a **new** commit — never
+amend the previous one.
 
 ## Gotchas and known quirks
 

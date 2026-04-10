@@ -42,14 +42,21 @@ impl InvoiceStatus {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Invoice {
     pub id: Uuid,
+    /// BT-1 Invoice number.
     pub number: String,
+    /// BT-2 Invoice issue date.
     pub issue_date: NaiveDate,
+    /// BT-9 Payment due date.
     pub due_date: Option<NaiveDate>,
-    /// Code devise ISO 4217 (ex. `"EUR"`).
+    /// BT-5 Invoice currency code (ISO 4217, ex. `"EUR"`).
     pub currency: String,
+    /// BG-4 Seller.
     pub seller: Party,
+    /// BG-7 Buyer.
     pub buyer: Party,
+    /// BG-25 Invoice lines.
     pub lines: Vec<LineItem>,
+    /// BT-22 Invoice note.
     #[serde(default)]
     pub notes: Option<String>,
     #[serde(default = "default_status")]
@@ -61,17 +68,17 @@ fn default_status() -> InvoiceStatus {
 }
 
 impl Invoice {
-    /// Total hors taxes (somme des lignes).
+    /// BT-106 / BT-109 Total hors taxes (somme des lignes).
     pub fn subtotal(&self) -> Decimal {
         self.lines.iter().map(LineItem::line_total).sum()
     }
 
-    /// Total des taxes (TVA) toutes lignes confondues.
+    /// BT-110 Total des taxes (TVA) toutes lignes confondues.
     pub fn tax_total(&self) -> Decimal {
         self.lines.iter().map(LineItem::tax_amount).sum()
     }
 
-    /// Total TTC.
+    /// BT-112 / BT-115 Total TTC.
     pub fn total(&self) -> Decimal {
         self.subtotal() + self.tax_total()
     }
@@ -80,14 +87,16 @@ impl Invoice {
 /// Partie prenante : émetteur ou destinataire.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Party {
+    /// BT-27 (seller) / BT-44 (buyer) Name.
     pub name: String,
-    /// Identifiant légal (SIRET pour la France).
+    /// BT-30 (seller) / BT-47 (buyer) Legal registration identifier (SIRET pour la France).
     #[serde(default)]
     pub legal_id: Option<String>,
-    /// Numéro de TVA intracommunautaire.
+    /// BT-31 (seller) / BT-48 (buyer) VAT identifier.
     #[serde(default)]
     pub vat_number: Option<String>,
     pub address: Address,
+    /// BT-34 (seller) / BT-49 (buyer) Electronic address.
     #[serde(default)]
     pub email: Option<String>,
 }
@@ -95,30 +104,36 @@ pub struct Party {
 /// Adresse postale.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Address {
+    /// BT-35 (seller) / BT-50 (buyer) Address line 1.
     pub street: String,
+    /// BT-37 (seller) / BT-52 (buyer) City name.
     pub city: String,
+    /// BT-38 (seller) / BT-53 (buyer) Post code.
     pub postal_code: String,
-    /// Code pays ISO 3166-1 alpha-2 (ex. `"FR"`).
+    /// BT-40 (seller) / BT-55 (buyer) Country code (ISO 3166-1 alpha-2, ex. `"FR"`).
     pub country_code: String,
 }
 
 /// Ligne de facture.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LineItem {
+    /// BT-153 Item name.
     pub description: String,
+    /// BT-129 Invoiced quantity.
     pub quantity: Decimal,
+    /// BT-146 Item net price.
     pub unit_price: Decimal,
-    /// Taux de TVA exprimé en fraction décimale (ex. `0.20` pour 20 %).
+    /// BT-152 Invoiced item VAT rate, en fraction décimale (ex. `0.20` pour 20 %).
     pub tax_rate: Decimal,
 }
 
 impl LineItem {
-    /// Montant hors taxes de la ligne.
+    /// BT-131 Montant hors taxes de la ligne.
     pub fn line_total(&self) -> Decimal {
         self.quantity * self.unit_price
     }
 
-    /// Montant de TVA de la ligne.
+    /// BT-117 Montant de TVA de la ligne.
     pub fn tax_amount(&self) -> Decimal {
         self.line_total() * self.tax_rate
     }

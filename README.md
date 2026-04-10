@@ -51,6 +51,28 @@ just fmt            # cargo fmt --all
 just lint           # cargo clippy -- -D warnings
 ```
 
+## Quality
+
+[![CI](https://github.com/eric-lemesre/einvoice-rs/actions/workflows/ci.yml/badge.svg)](https://github.com/eric-lemesre/einvoice-rs/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/eric-lemesre/einvoice-rs/graph/badge.svg)](https://codecov.io/gh/eric-lemesre/einvoice-rs)
+
+| Tool | Purpose | Recipe |
+|------|---------|--------|
+| `clippy` | Lint (workspace-level rules in `Cargo.toml` + `clippy.toml`) | `just lint` |
+| `cargo-deny` | License, advisory and ban checks | `just deny` |
+| `cargo-llvm-cov` | Code coverage (HTML + LCOV) | `just coverage` / `just coverage-lcov` |
+| `cargo-mutants` | Mutation testing (weekly CI) | `just mutants` |
+| Git pre-commit hook | fmt + lint + fast tests | `just setup-hooks` |
+
+EN 16931 requirements traceability:
+[`docs/references/traceability-matrix.md`](docs/references/traceability-matrix.md).
+
+### Git hooks
+
+Run `just setup-hooks` to activate the pre-commit hook that checks
+formatting, clippy lints, and runs the core/facturx/ubl test suites
+before each commit.
+
 ## Project status
 
 Project is in its bootstrap phase. `einvoice-facturx::FacturXSerializer`
@@ -73,6 +95,7 @@ Reference sheets are available under [`docs/references/`](docs/references/):
 - [`docs/references/chorus-pro-piste.md`](docs/references/chorus-pro-piste.md) — French public platform API
 - [`docs/references/french-2026-reform.md`](docs/references/french-2026-reform.md) — PPF, PDP, e-reporting
 - [`docs/references/mandatory-invoice-fields.md`](docs/references/mandatory-invoice-fields.md) — mandatory invoice fields (EN 16931, CGI, 2026 reform)
+- [`docs/references/traceability-matrix.md`](docs/references/traceability-matrix.md) — EN 16931 requirements traceability (BT/BR to code and tests)
 
 ## License
 
